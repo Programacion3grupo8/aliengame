@@ -61,16 +61,16 @@ public class PlayerController1 : MonoBehaviour
     void LimitarMovimiento()
     {
         Vector2 limitacion = transform.position;
-        limitacion.x = Mathf.Clamp(limitacion.x, 9, 9);
-        limitacion.y = Mathf.Clamp(limitacion.y, -7, 7);
+        limitacion.x = Mathf.Clamp(limitacion.x, 5, 5);
+        limitacion.y = Mathf.Clamp(limitacion.y, -4.3f, 4.3f);
 
         transform.position = limitacion;
 
-        if (limitacion.y == -7)
+        if (limitacion.y == -4.3f)
         {
 
         }
-        if (limitacion.y == 7)
+        if (limitacion.y == 4.3f)
         {
 
         }
