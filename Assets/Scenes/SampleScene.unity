@@ -302,7 +302,7 @@ MonoBehaviour:
   BalaPrefabs: {fileID: 9218979375610666177, guid: 3bf62ccc73f1d684aac9e73d0f4d8dc3,
     type: 3}
   Velocidad: 0.3
-  Helio: 0
+  Helio: 100
   "Da\xF1oBala": 0
   CantidadBalas: 15
   "Ca\xF1on": {fileID: 154822716}
