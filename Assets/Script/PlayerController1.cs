@@ -35,10 +35,6 @@ public class PlayerController1 : MonoBehaviour
         InvokeRepeating("DropHelium", 10, 10);
     }
 
-    private void DropHelium(){
-        Helio -= 5;
-        Debug.Log("La cantidad de helio actual es de: " + Helio);
-    }
     private void Update()
     {
         movimineto = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
@@ -49,7 +45,6 @@ public class PlayerController1 : MonoBehaviour
 
         if(Helio == 0){
             Debug.Log("Game Over");
-            GameOver();
         }
 
     }
@@ -70,7 +65,6 @@ public class PlayerController1 : MonoBehaviour
         if (Mathf.Abs(limitacion.y) == 4.3f)
         {
             Debug.Log("Game Over");
-            GameOver();
         }
     
     }
@@ -86,10 +80,12 @@ public class PlayerController1 : MonoBehaviour
             }
         }
     }
-
-    void GameOver(){
-        SceneManager.UnloadSceneAsync("Principal");
-        // UnloadSceneAsync
+    void IncreaseHelium(int cantidad){
+        Helio += cantidad;
+        Debug.Log("La cantidad de helio actual es de: " + Helio);
     }
-
+    private void DropHelium(){
+        Helio -= 5;
+        Debug.Log("La cantidad de helio actual es de: " + Helio);
+    }
 }

@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 6985250621295055076}
   - component: {fileID: 4716901474897808157}
   - component: {fileID: 1700987243907102085}
+  - component: {fileID: 6255119964264137285}
   m_Layer: 0
   m_Name: Bala
-  m_TagString: Untagged
+  m_TagString: Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -95,4 +96,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   VelocidadBala: 0.3
-  Limite: 11
+  Limite: -10
+--- !u!61 &6255119964264137285
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9218979375610666177}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.13467872, y: -0.022826813}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.28, y: 1.28}
+    newSize: {x: 1.28, y: 1.28}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.6180198, y: 0.093001604}
+  m_EdgeRadius: 0
