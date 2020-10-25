@@ -36,7 +36,26 @@ public class PlayerController1 : MonoBehaviour
 
     private void Update()
     {
+        Estado = Helio > 0;
+
+
+        if(Helio > 0)
+        {
+            Estado = true;
+        }
+        else
+        {
+            Estado = false;
+        }
+
+
+
+        if (!Estado) return;
+
+
         movimineto = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+
+
         if (Input.GetButtonDown("Fire1"))
         {
             Disparar();
@@ -66,18 +85,7 @@ public class PlayerController1 : MonoBehaviour
 
         transform.position = limitacion;
 
-        if (limitacion.y == -7)
-        {
-
-        }
-        if (limitacion.y == 7)
-        {
-
-        }
-        else
-        {
-
-        }
+       
     }
 
     void Disparar()
