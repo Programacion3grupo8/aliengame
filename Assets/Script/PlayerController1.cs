@@ -8,6 +8,7 @@ public class PlayerController1 : MonoBehaviour
     public GameObject BalaPrefabs;
     public float Velocidad;
     public int Helio;
+    private int cantidadHelioDisminuye = 5;
     public int DañoBala;
     public int CantidadBalas;
     public Transform Cañon;
@@ -85,7 +86,7 @@ public class PlayerController1 : MonoBehaviour
         Debug.Log("La cantidad de helio actual es de: " + Helio);
     }
     private void DropHelium(){
-        Helio -= 5;
+        Helio -= cantidadHelioDisminuye;
         Debug.Log("La cantidad de helio actual es de: " + Helio);
     }
 }
