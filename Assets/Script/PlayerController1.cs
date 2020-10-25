@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController1 : MonoBehaviour
 {
@@ -17,9 +18,6 @@ public class PlayerController1 : MonoBehaviour
     GameObject[] Balas;
 
 
-
-
-
     private void Awake()
     {
         rb2D = GetComponent<Rigidbody2D>();
@@ -33,31 +31,34 @@ public class PlayerController1 : MonoBehaviour
 
     }
 
+    void Start(){
+        InvokeRepeating("DropHelium", 10, 10);
+    }
 
+    private void DropHelium(){
+        Helio -= 5;
+        Debug.Log("La cantidad de helio actual es de: " + Helio);
+    }
     private void Update()
     {
         movimineto = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1") || Input.GetKeyDown("space"))
         {
             Disparar();
         }
+
+        if(Helio == 0){
+            Debug.Log("Game Over");
+            GameOver();
+        }
+
     }
-
-
-
-
-
     private void FixedUpdate()
     {
         transform.Translate(movimineto * Velocidad);
 
         LimitarMovimiento();
     }
-
-
-
-
-
     void LimitarMovimiento()
     {
         Vector2 limitacion = transform.position;
@@ -66,20 +67,13 @@ public class PlayerController1 : MonoBehaviour
 
         transform.position = limitacion;
 
-        if (limitacion.y == -4.3f)
+        if (Mathf.Abs(limitacion.y) == 4.3f)
         {
-
+            Debug.Log("Game Over");
+            GameOver();
         }
-        if (limitacion.y == 4.3f)
-        {
-
-        }
-        else
-        {
-
-        }
+    
     }
-
     void Disparar()
     {
         for (int i = 0; i < Balas.Length; i++)
@@ -91,6 +85,11 @@ public class PlayerController1 : MonoBehaviour
                 break;
             }
         }
+    }
+
+    void GameOver(){
+        SceneManager.UnloadSceneAsync("Principal");
+        // UnloadSceneAsync
     }
 
 }
