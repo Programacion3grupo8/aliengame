@@ -10,7 +10,7 @@ public class EnemyController : MonoBehaviour
     int blueBalloonPoints = 10;
     int indexColor;
     public Rigidbody2D rb2d;
-    public Animator animator;
+    private Animator animator;
     public PlayerController1 player;
 
     // Start is called before the first frame update
@@ -28,7 +28,17 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
+    }
+
+    public void UpdateState(string state = null){
+        if(state != null){
+            animator.Play(state);
+        }
+    }
+
+    private void BalloonExplosion(){
+        Destroy(gameObject);
     }
 
     private void GetRandomBalloon(){
@@ -36,14 +46,15 @@ public class EnemyController : MonoBehaviour
         if(colors[indexColor] == "blue"){
             rb2d.velocity *= 2;
         }
-        animator.Play(colors[indexColor] + "balloon");
+        UpdateState(colors[indexColor] + "balloon");
     }
     public void OnTriggerEnter2D(Collider2D other){
         if(other.gameObject.tag == "Destroyer"){
-            Destroy(gameObject);
+            BalloonExplosion();
         }
         else if(other.gameObject.tag == "Bullet"){
-            Destroy(gameObject);
+            rb2d.velocity = Vector2.up * 0;
+            UpdateState("BalloonDie");
 
             player.SendMessage("IncreaseHelium",(colors[indexColor] == "blue"?blueBalloonPoints:normalPoints));
 
