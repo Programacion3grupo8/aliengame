@@ -34,7 +34,7 @@ public class EnemyController : MonoBehaviour
     private void GetRandomBalloon(){
         indexColor = Random.Range(0, 5);
         if(colors[indexColor] == "blue"){
-            rb2d.velocity *= 2;
+            rb2d.velocity *= 2.5f;
         }
         animator.Play(colors[indexColor] + "balloon");
     }
