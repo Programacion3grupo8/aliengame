@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class PlayerController1 : MonoBehaviour
 {
     public GameObject BalaPrefabs;
-   
+    private bool move;
     public float Velocidad;
     public int Helio;
     private int cantidadHelioDisminuye = 5;
@@ -14,15 +14,17 @@ public class PlayerController1 : MonoBehaviour
     public int CantidadBalas;
     public Transform Cañon;
     private Animator animator;
+    public GameObject canvas;
 
     Rigidbody2D rb2D;
-    Vector2 movimineto;
+    public Vector2 movimineto;
     bool Estado;
     GameObject[] Balas;
 
 
     private void Awake()
     {
+        move = true;
         rb2D = GetComponent<Rigidbody2D>();
         Balas = new GameObject[CantidadBalas];
         animator = GetComponent<Animator>();
@@ -34,29 +36,51 @@ public class PlayerController1 : MonoBehaviour
 
     }
 
-    void Start(){
-        InvokeRepeating("DropHelium", 10, 10);
-        
+    public void ResetHelium(){
+        move = true;
+        Helio = 10;
     }
 
+    public void SetHeliumText(){
+        canvas.SendMessage("SetScore", Helio);
+    }
+    void Start(){
+
+    }
+
+    
+    public void StartDroppingHelium(){
+        InvokeRepeating("DropHelium", 10, 10);
+    }
+    public void StopDroppingHelium(){
+        CancelInvoke("DropHelium");
+    }
     private void Update()
     {
-        movimineto = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        Move();
+        SetHeliumText();
         if (Input.GetButtonDown("Fire1") || Input.GetKeyDown("space"))
         {
             Disparar();
         }
 
-        if(Helio == 0){
+        if(Helio <= 0 && move){
             UpdateState("GameOver");
         }
+        
+    }
 
+    private void Move(){
+        movimineto = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
     }
     private void FixedUpdate()
     {
-        transform.Translate(movimineto * Velocidad);
+        if(move){
+            transform.Translate(movimineto * Velocidad);
+            LimitarMovimiento();
 
-        LimitarMovimiento();
+        }
+
     }
     void LimitarMovimiento()
     {
@@ -75,14 +99,17 @@ public class PlayerController1 : MonoBehaviour
     }
     void Disparar()
     {
-        for (int i = 0; i < Balas.Length; i++)
-        {
-            if (!Balas[i].activeInHierarchy)
+        if(move){
+            for (int i = 0; i < Balas.Length; i++)
             {
-                Balas[i].SetActive(true);
-                Balas[i].transform.position = Cañon.position;
-                break;
+                if (!Balas[i].activeInHierarchy)
+                {
+                    Balas[i].SetActive(true);
+                    Balas[i].transform.position = Cañon.position;
+                    break;
+                }
             }
+
         }
     }
     void IncreaseHelium(int cantidad){
@@ -91,12 +118,23 @@ public class PlayerController1 : MonoBehaviour
     }
     private void DropHelium(){
         Helio -= cantidadHelioDisminuye;
+        Helio = Helio < 0 ? 0 : Helio;
         Debug.Log("La cantidad de helio actual es de: " + Helio);
     }
 
     public void UpdateState(string state = null){
         if(state != null){
             animator.Play(state);
+            if(state == "GameOver"){
+                move = false;
+            }
         }
+    }
+    public void GameOver(){
+        
+        canvas.SendMessage("GameOver");
+        transform.position = new Vector2(5,-1.3f);
+        UpdateState("Ship");
+    
     }
 }

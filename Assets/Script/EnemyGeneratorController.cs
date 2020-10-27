@@ -9,7 +9,7 @@ public class EnemyGeneratorController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating("CreateEnemy", 0f, repeatTime);
+       
     }
 
     // Update is called once per frame
@@ -17,7 +17,12 @@ public class EnemyGeneratorController : MonoBehaviour
     {
         
     }
-
+    public void StartCreatingEnemies(){
+        InvokeRepeating("CreateEnemy", 0f, repeatTime);
+    }
+    public void StopCreatingEnemies(){
+        CancelInvoke("CreateEnemy");
+    }
     private void CreateEnemy(){
         Vector3 desfase = new Vector3(Random.Range(1.00f,5.00f),0,0);
 
