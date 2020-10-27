@@ -51,7 +51,7 @@ public class GameController : MonoBehaviour
         enemyGenerator.SetActive(true);
         player.SetActive(true);
         player.SendMessage("ResetHelium");
-        player.transform.position = new Vector2(5,0);
+        player.transform.position = new Vector2(5,-1.3);
         home.SetActive(false);
         pausa.SetActive(false);
         gameOver.SetActive(false);
