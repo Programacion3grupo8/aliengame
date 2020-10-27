@@ -12,6 +12,7 @@ public class PlayerController1 : MonoBehaviour
     public int DañoBala;
     public int CantidadBalas;
     public Transform Cañon;
+    private Animator animator;
 
     Rigidbody2D rb2D;
     Vector2 movimineto;
@@ -23,7 +24,7 @@ public class PlayerController1 : MonoBehaviour
     {
         rb2D = GetComponent<Rigidbody2D>();
         Balas = new GameObject[CantidadBalas];
-
+        animator = GetComponent<Animator>();
         for (int i = 0; i < Balas.Length; i++)
         {
            Balas[i] = (GameObject) Instantiate(BalaPrefabs);
@@ -34,6 +35,7 @@ public class PlayerController1 : MonoBehaviour
 
     void Start(){
         InvokeRepeating("DropHelium", 10, 10);
+        
     }
 
     private void Update()
@@ -45,7 +47,7 @@ public class PlayerController1 : MonoBehaviour
         }
 
         if(Helio == 0){
-            Debug.Log("Game Over");
+            UpdateState("GameOver");
         }
 
     }
@@ -66,6 +68,7 @@ public class PlayerController1 : MonoBehaviour
         if (Mathf.Abs(limitacion.y) == 4.3f)
         {
             Debug.Log("Game Over");
+            UpdateState("GameOver");
         }
     
     }
@@ -88,5 +91,11 @@ public class PlayerController1 : MonoBehaviour
     private void DropHelium(){
         Helio -= cantidadHelioDisminuye;
         Debug.Log("La cantidad de helio actual es de: " + Helio);
+    }
+
+    public void UpdateState(string state = null){
+        if(state != null){
+            animator.Play(state);
+        }
     }
 }
