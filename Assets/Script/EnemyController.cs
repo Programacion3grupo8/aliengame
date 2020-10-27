@@ -12,6 +12,7 @@ public class EnemyController : MonoBehaviour
     public Rigidbody2D rb2d;
     private Animator animator;
     public PlayerController1 player;
+    public PolygonCollider2D collider2D;
 
     // Start is called before the first frame update
     void Start()
@@ -22,6 +23,7 @@ public class EnemyController : MonoBehaviour
         animator = GetComponent<Animator>();
         rb2d = GetComponent<Rigidbody2D>();
         rb2d.velocity = Vector2.up * velocity;
+        collider2D = GetComponent<PolygonCollider2D>();
         GetRandomBalloon();
     }
 
@@ -55,9 +57,8 @@ public class EnemyController : MonoBehaviour
         else if(other.gameObject.tag == "Bullet"){
             rb2d.velocity = Vector2.up * 0;
             UpdateState("BalloonDie");
-
             player.SendMessage("IncreaseHelium",(colors[indexColor] == "blue"?blueBalloonPoints:normalPoints));
-
+            Destroy(collider2D);
         }
     }
 
