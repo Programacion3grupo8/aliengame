@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class PlayerController1 : MonoBehaviour
 {
     public GameObject BalaPrefabs;
+   
     public float Velocidad;
     public int Helio;
     private int cantidadHelioDisminuye = 5;
@@ -45,7 +46,7 @@ public class PlayerController1 : MonoBehaviour
         }
 
         if(Helio == 0){
-            Debug.Log("Game Over");
+            SceneManager.LoadScene("Game Over");
         }
 
     }
@@ -65,7 +66,7 @@ public class PlayerController1 : MonoBehaviour
 
         if (Mathf.Abs(limitacion.y) == 4.3f)
         {
-            Debug.Log("Game Over");
+            SceneManager.LoadScene("Game Over");
         }
     
     }
