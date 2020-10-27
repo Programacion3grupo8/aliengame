@@ -12,7 +12,7 @@ public class EnemyController : MonoBehaviour
     public Rigidbody2D rb2d;
     private Animator animator;
     public PlayerController1 player;
-    public PolygonCollider2D collider2D;
+    public Collider2D collider2D;
 
     // Start is called before the first frame update
     void Start()
@@ -23,7 +23,7 @@ public class EnemyController : MonoBehaviour
         animator = GetComponent<Animator>();
         rb2d = GetComponent<Rigidbody2D>();
         rb2d.velocity = Vector2.up * velocity;
-        collider2D = GetComponent<PolygonCollider2D>();
+        collider2D = GetComponent<Collider2D>();
         GetRandomBalloon();
     }
 
