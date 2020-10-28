@@ -12,7 +12,7 @@ public class EnemyController : MonoBehaviour
     public Rigidbody2D rb2d;
     private Animator animator;
     public PlayerController1 player;
-    public Collider2D collider2D;
+    private Collider2D collider2D;
 
     // Start is called before the first frame update
     void Start()
