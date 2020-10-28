@@ -39,11 +39,16 @@ public class GameController : MonoBehaviour
         //player.enabled = false;
         Time.timeScale = 0;
         pausa.SetActive(true);
+        home.SetActive(false);
+        gameOver.SetActive(false);
     }
 
     public void Jugando(){
+        estado = GameState.Jugando;
         Time.timeScale = 1f;
-        EmpezarJuego();
+        pausa.SetActive(false);
+        home.SetActive(false);
+        gameOver.SetActive(false);
     }
 
     public void EmpezarJuego(){
