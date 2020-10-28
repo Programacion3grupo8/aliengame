@@ -27,12 +27,15 @@ public class PlayerController1 : MonoBehaviour
     bool Estado;
     GameObject[] Balas;
 
+    private AudioSource musicPlayer;
+    public AudioClip explosionClip;
+    public AudioClip bulletClip;
 
     private void Awake()
     {
         rb2D = GetComponent<Rigidbody2D>();
         Balas = new GameObject[CantidadBalas];
-        animator = GetComponent<Animator>();
+        animator = GetComponent<Animator>();        
         for (int i = 0; i < Balas.Length; i++)
         {
            Balas[i] = (GameObject) Instantiate(BalaPrefabs);
@@ -51,6 +54,7 @@ public class PlayerController1 : MonoBehaviour
     }
     void Start(){
         BtnDone();
+        musicPlayer = GetComponent<AudioSource>();
     }   
 
     public void MoveUp(){
@@ -84,6 +88,9 @@ public class PlayerController1 : MonoBehaviour
         }
 
         if(Helio <= 0 && move){
+            musicPlayer.Stop();
+            musicPlayer.clip = explosionClip;
+            musicPlayer.Play();
             UpdateState("GameOver");
         }
         else if(Helio >= 500){
@@ -141,6 +148,8 @@ public class PlayerController1 : MonoBehaviour
         if (Mathf.Abs(limitacion.y) == 4.3f)
         {
             Debug.Log("Game Over");
+            musicPlayer.clip = explosionClip;
+            musicPlayer.Play();
             UpdateState("GameOver");
         }
     
@@ -154,10 +163,11 @@ public class PlayerController1 : MonoBehaviour
                 {
                     Balas[i].SetActive(true);
                     Balas[i].transform.position = Cañon.position;
+                    musicPlayer.clip = bulletClip;
+                    musicPlayer.Play();
                     break;
                 }
-            }
-
+            }            
         }
     }
     void IncreaseHelium(int cantidad){
@@ -178,8 +188,7 @@ public class PlayerController1 : MonoBehaviour
             }
         }
     }
-    public void GameOver(){
-        
+    public void GameOver(){        
         canvas.SendMessage("GameOver");
         transform.position = new Vector2(5,-1.3f);
         UpdateState("Ship");

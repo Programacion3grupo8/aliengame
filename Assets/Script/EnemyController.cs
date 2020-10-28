@@ -14,6 +14,9 @@ public class EnemyController : MonoBehaviour
     public PlayerController1 player;
     private Collider2D collider2D;
 
+    private AudioSource musicPlayer;
+    public AudioClip explosionClip;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +27,7 @@ public class EnemyController : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
         rb2d.velocity = Vector2.up * velocity;
         collider2D = GetComponent<Collider2D>();
+        musicPlayer = GetComponent<AudioSource>();
         GetRandomBalloon();
     }
 
@@ -39,7 +43,7 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    private void BalloonExplosion(){
+    private void BalloonExplosion(){        
         Destroy(gameObject);
     }
 
@@ -55,6 +59,8 @@ public class EnemyController : MonoBehaviour
             BalloonExplosion();
         }
         else if(other.gameObject.tag == "Bullet"){
+            musicPlayer.clip = explosionClip;
+            musicPlayer.Play();
             rb2d.velocity = Vector2.up * 0;
             UpdateState("BalloonDie");
             player.SendMessage("IncreaseHelium",(colors[indexColor] == "blue"?blueBalloonPoints:normalPoints));

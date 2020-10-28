@@ -21,7 +21,6 @@ public class GameController : MonoBehaviour
     private AudioSource musicPlayer;
     public AudioClip menuClip;
     public AudioClip gameClip;
-    public AudioClip gameOverClip;
     public AudioClip winClip;
 
     private int partyCount = 0;
@@ -97,6 +96,8 @@ public class GameController : MonoBehaviour
 
     public void Win(){
         if(estado != GameState.Win){
+            musicPlayer.clip = winClip;
+            musicPlayer.Play();
             estado = GameState.Win;
             home.SetActive(false);
             pausa.SetActive(false);
