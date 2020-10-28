@@ -17,11 +17,20 @@ public class GameController : MonoBehaviour
     public GameObject win;
     public GameObject player;
     public GameObject enemyGenerator;
+    
+    private AudioSource musicPlayer;
+    public AudioClip menuClip;
+    public AudioClip gameClip;
+    public AudioClip gameOverClip;
+    public AudioClip winClip;
+
     private int partyCount = 0;
     // Start is called before the first frame update
     void Start()
     {
         SetScore(10);
+        musicPlayer = GetComponent<AudioSource>();
+        musicPlayer.Play();
     }
 
 
@@ -46,6 +55,7 @@ public class GameController : MonoBehaviour
             home.SetActive(false);
             gameOver.SetActive(false);
             win.SetActive(false);
+            musicPlayer.Stop();
         }else if(estado == GameState.Pausa){
             Jugando();
         }
@@ -61,6 +71,8 @@ public class GameController : MonoBehaviour
             gameOver.SetActive(false);
             win.SetActive(false);
             jugando.SetActive(true);
+            musicPlayer.clip = gameClip;
+            musicPlayer.Play();
         }
     }
 
@@ -78,6 +90,7 @@ public class GameController : MonoBehaviour
             estado = GameState.Inicio;
             Time.timeScale = 1f;
             SceneManager.LoadScene("Principal");
+            
         }
    
     }
@@ -125,14 +138,15 @@ public class GameController : MonoBehaviour
             pausa.SetActive(false);
             win.SetActive(false);
             jugando.SetActive(false);
+            musicPlayer.Stop();
         }
         
 
     }
 
     public void ExitGame(){
-        Application.Quit();
         Debug.Log("Exit");
+        Application.Quit();
 
     }
     public void SetScore(int score = 0){
