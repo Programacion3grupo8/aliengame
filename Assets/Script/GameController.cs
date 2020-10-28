@@ -84,6 +84,8 @@ public class GameController : MonoBehaviour
             pausa.SetActive(false);
             gameOver.SetActive(false);
             win.SetActive(true);
+            enemyGenerator.SetActive(true);
+            player.SetActive(true);
             enemyGenerator.SendMessage("StopCreatingEnemies");
             player.SendMessage("StopDroppingHelium");
             Party();
@@ -108,9 +110,10 @@ public class GameController : MonoBehaviour
     public void GameOver(){
         if(estado != GameState.GameOver){
             estado = GameState.GameOver;
+            enemyGenerator.SetActive(true);
+            player.SetActive(true);
             enemyGenerator.SendMessage("StopCreatingEnemies");
             player.SendMessage("StopDroppingHelium");
-            enemyGenerator.SetActive(false);
             home.SetActive(false);
             pausa.SetActive(false);
             gameOver.SetActive(true);
