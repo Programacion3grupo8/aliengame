@@ -6,8 +6,14 @@ using UnityEngine.SceneManagement;
 public class PlayerController1 : MonoBehaviour
 {
     public GameObject BalaPrefabs;
-    private bool move;
+    private bool move = true;
+    public bool btnDone = true;
+    private bool btnUp = false;
+    private bool btnDown = false;
+    private bool btnPausa = false;
     public float Velocidad;
+    private float h;
+    private float v;
     public int Helio;
     private int cantidadHelioDisminuye = 5;
     public int DañoBala;
@@ -24,7 +30,6 @@ public class PlayerController1 : MonoBehaviour
 
     private void Awake()
     {
-        move = true;
         rb2D = GetComponent<Rigidbody2D>();
         Balas = new GameObject[CantidadBalas];
         animator = GetComponent<Animator>();
@@ -45,9 +50,21 @@ public class PlayerController1 : MonoBehaviour
         canvas.SendMessage("SetScore", Helio);
     }
     void Start(){
+        BtnDone();
+    }   
 
+    public void MoveUp(){
+        btnUp = true;
+        btnDone = false;
     }
-
+    public void MoveDown(){
+        btnDown = true;
+        btnDone = false;
+    }
+    public void Pausa(){
+        btnPausa = true;
+        btnDone = false;
+    }
     
     public void StartDroppingHelium(){
         InvokeRepeating("DropHelium", 10, 10);
@@ -60,7 +77,8 @@ public class PlayerController1 : MonoBehaviour
     {
         Move();
         SetHeliumText();
-        if (Input.GetButtonDown("Fire1") || Input.GetKeyDown("space"))
+        bool shoot = (btnDone && Input.GetButtonDown("Fire1")) || Input.GetKeyDown("space") || (Input.touchCount > 1 && Input.GetTouch(1).phase == TouchPhase.Ended);
+        if (!btnPausa && shoot)
         {
             Disparar();
         }
@@ -75,15 +93,41 @@ public class PlayerController1 : MonoBehaviour
     }
 
     private void Move(){
-        movimineto = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        h = Input.GetAxis("Horizontal");
+        if(btnUp){
+            v = Time.timeScale / 5;
+        }
+        else if(btnDown){
+           v = -Time.timeScale / 5;
+        }
+        else{
+            v = Input.GetAxis("Vertical");
+            //Add touch support
+        }
+        if(v != 0){
+            movimineto = new Vector2(h,v);
+        }
+      
+    }
+    public void StopMoving(){
+        if(v == 0){
+            movimineto = new Vector2(0,-0.05f);  
+        }
+    }
+    public void BtnDone(){
+        btnDone = true;
+        btnUp = false;
+        btnDown = false;
+        btnPausa = false;
     }
     private void FixedUpdate()
     {
         if(move){
             transform.Translate(movimineto * Velocidad);
             LimitarMovimiento();
-
+            StopMoving();
         }
+
 
     }
     void LimitarMovimiento()
@@ -104,7 +148,7 @@ public class PlayerController1 : MonoBehaviour
     void Disparar()
     {
         if(move){
-            for (int i = 0; i < Balas.Length; i++)
+            for (int i = 0; i < CantidadBalas; i++)
             {
                 if (!Balas[i].activeInHierarchy)
                 {

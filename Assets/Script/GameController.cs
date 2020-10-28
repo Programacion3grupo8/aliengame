@@ -10,9 +10,10 @@ public class GameController : MonoBehaviour
     public GameState estado = GameState.Inicio;
     public GameObject home;
     public GameObject pausa;
+    public GameObject gameOver;
+    public GameObject jugando;
     public Text helio;
     public Text maxHelio;
-    public GameObject gameOver;
     public GameObject win;
     public GameObject player;
     public GameObject enemyGenerator;
@@ -37,36 +38,40 @@ public class GameController : MonoBehaviour
     }
 
     public void Pausa(){
-        estado = GameState.Pausa;
-        //player.enabled = false;
-        Time.timeScale = 0;
-        pausa.SetActive(true);
-        home.SetActive(false);
-        gameOver.SetActive(false);
-        win.SetActive(false);
+        if(estado != GameState.Pausa){
+            estado = GameState.Pausa;
+            Time.timeScale = 0;
+            pausa.SetActive(true);
+            jugando.SetActive(false);
+            home.SetActive(false);
+            gameOver.SetActive(false);
+            win.SetActive(false);
+        }else if(estado == GameState.Pausa){
+            Jugando();
+        }
+
     }
 
     public void Jugando(){
-        estado = GameState.Jugando;
-        Time.timeScale = 1f;
-        pausa.SetActive(false);
-        home.SetActive(false);
-        gameOver.SetActive(false);
-        win.SetActive(false);
+        if(estado != GameState.Jugando){
+            estado = GameState.Jugando;
+            Time.timeScale = 1f;
+            pausa.SetActive(false);
+            home.SetActive(false);
+            gameOver.SetActive(false);
+            win.SetActive(false);
+            jugando.SetActive(true);
+        }
     }
 
     public void EmpezarJuego(){
-        estado = GameState.Jugando;
         enemyGenerator.SetActive(true);
         player.SetActive(true);
         player.SendMessage("ResetHelium");
-        player.transform.position = new Vector2(5,-1.3f);
-        home.SetActive(false);
-        pausa.SetActive(false);
-        gameOver.SetActive(false);
-        win.SetActive(false);
         enemyGenerator.SendMessage("StartCreatingEnemies");
         player.SendMessage("StartDroppingHelium");
+        player.transform.position = new Vector2(5,-1.3f);
+        Jugando();
     }
     public void Inicio(){
         if(estado != GameState.Inicio){
@@ -83,6 +88,7 @@ public class GameController : MonoBehaviour
             home.SetActive(false);
             pausa.SetActive(false);
             gameOver.SetActive(false);
+            jugando.SetActive(false);
             win.SetActive(true);
             enemyGenerator.SetActive(true);
             player.SetActive(true);
@@ -114,10 +120,11 @@ public class GameController : MonoBehaviour
             player.SetActive(true);
             enemyGenerator.SendMessage("StopCreatingEnemies");
             player.SendMessage("StopDroppingHelium");
+            gameOver.SetActive(true);
             home.SetActive(false);
             pausa.SetActive(false);
-            gameOver.SetActive(true);
             win.SetActive(false);
+            jugando.SetActive(false);
         }
         
 
