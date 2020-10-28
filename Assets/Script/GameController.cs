@@ -6,15 +6,17 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
-    public enum GameState{Inicio, Pausa, Jugando, GameOver};
+    public enum GameState{Inicio, Pausa, Jugando, GameOver, Win};
     public GameState estado = GameState.Inicio;
     public GameObject home;
     public GameObject pausa;
     public Text helio;
     public Text maxHelio;
     public GameObject gameOver;
+    public GameObject win;
     public GameObject player;
     public GameObject enemyGenerator;
+    private int partyCount = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -41,6 +43,7 @@ public class GameController : MonoBehaviour
         pausa.SetActive(true);
         home.SetActive(false);
         gameOver.SetActive(false);
+        win.SetActive(false);
     }
 
     public void Jugando(){
@@ -49,6 +52,7 @@ public class GameController : MonoBehaviour
         pausa.SetActive(false);
         home.SetActive(false);
         gameOver.SetActive(false);
+        win.SetActive(false);
     }
 
     public void EmpezarJuego(){
@@ -60,6 +64,7 @@ public class GameController : MonoBehaviour
         home.SetActive(false);
         pausa.SetActive(false);
         gameOver.SetActive(false);
+        win.SetActive(false);
         enemyGenerator.SendMessage("StartCreatingEnemies");
         player.SendMessage("StartDroppingHelium");
     }
@@ -72,6 +77,34 @@ public class GameController : MonoBehaviour
    
     }
 
+    public void Win(){
+        if(estado != GameState.Win){
+            estado = GameState.Win;
+            home.SetActive(false);
+            pausa.SetActive(false);
+            gameOver.SetActive(false);
+            win.SetActive(true);
+            enemyGenerator.SendMessage("StopCreatingEnemies");
+            player.SendMessage("StopDroppingHelium");
+            Party();
+            partyCount = 1;
+        }
+    }
+
+    public void Party(){
+        if(estado == GameState.Win){
+            if(partyCount == 0){
+                enemyGenerator.SetActive(true);
+                enemyGenerator.SendMessage("CreateCount", 20);
+                enemyGenerator.SetActive(false);
+                partyCount += 20;
+            }
+            else{
+                partyCount -= 1;
+            }
+            
+        }
+    }
     public void GameOver(){
         if(estado != GameState.GameOver){
             estado = GameState.GameOver;
@@ -81,6 +114,7 @@ public class GameController : MonoBehaviour
             home.SetActive(false);
             pausa.SetActive(false);
             gameOver.SetActive(true);
+            win.SetActive(false);
         }
         
 

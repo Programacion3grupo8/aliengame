@@ -53,6 +53,7 @@ public class PlayerController1 : MonoBehaviour
         InvokeRepeating("DropHelium", 10, 10);
     }
     public void StopDroppingHelium(){
+        move = false;
         CancelInvoke("DropHelium");
     }
     private void Update()
@@ -66,6 +67,9 @@ public class PlayerController1 : MonoBehaviour
 
         if(Helio <= 0 && move){
             UpdateState("GameOver");
+        }
+        else if(Helio >= 500){
+            canvas.SendMessage("Win");
         }
         
     }
